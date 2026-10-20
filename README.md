@@ -1,6 +1,6 @@
-# AI Decision Maker
+# whatIf
 
-An AI-featured decision-making app.
+An AI-powered decision-making app.
 
 ## Vision
 

@@ -1,4 +1,4 @@
-# Docs Index
+# whatIf — Docs Index
 
 ## Phase 1 — Product Definition & MVP Scope
 - [01 Product Definition](./phase-1/01-product-definition.md)
@@ -14,7 +14,7 @@
 
 ## Folder Structure
 ```
-ai-decision-maker/
+whatif/
 ├── client/                 # React + TS (Vite) web app
 │   ├── public/             # static assets
 │   └── src/
