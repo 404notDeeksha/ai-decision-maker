@@ -5,7 +5,7 @@
 2. **Targeted follow-ups** — AI extracts 2–4 options and asks 2–4 questions (priorities, constraints, what matters most).
 3. **Results screen** — renders the structured output (restatement, priorities, pros/cons, blind spot, recommendation).
 4. **Reset** — "Start over" clears everything in one click.
-5. **Share** — copy result text + a share link/image card for X.
+5. **Share** — copy result text + share link for X (text only in L1; image card later).
 
 ## Out of scope (deliberately later)
 Auth · database/history · editing answers · multi-language · export (PDF) · teams · analytics dashboard · native app.

@@ -9,13 +9,14 @@ Lock these before writing code. Update status as we go.
 | D3 | State handling | Client holds transcript; server stateless (no DB) | Decided |
 | D4 | Auth | None for MVP | Decided |
 | D5 | LLM output format | JSON (schema-validated) | Decided |
-| D6 | LLM provider | OpenAI (swap-friendly service layer) | Open |
-| D7 | Share mechanism | Copy text + share link; image card later | Open |
-| D8 | Hosting | Vercel (client) + Render/Railway (server) | Open |
+| D6 | LLM provider | OpenAI (swap-friendly service layer) | Decided |
+| D7 | Share mechanism | Copy text + share link; image card later | Decided |
+| D8 | Hosting | Vercel (client) + Render (server) | Decided |
 | D9 | Monetization for MVP | **Free** — no login, no paywall, no ads | Decided |
 | D10 | Cost protection | Per-IP + global daily caps, cheap model, input cap | Decided |
 | D11 | Limit values | See `06-free-access-and-limits.md` | Decided |
+| D12 | Permalink in L1 | No — text/link share only | Decided |
+| D13 | Global daily cap | 1,000 analyses/day (tune from usage) | Decided |
 
-## Open questions
-- Should results be shareable as a permalink in L1, or text-only? (recommend: text-only in L1).
-- Exact global daily cap value (start at 1,000 and tune).
+## Status
+**All Phase 1 decisions closed. Scope frozen on the 5 MVP features.**
