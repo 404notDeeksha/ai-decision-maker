@@ -10,7 +10,7 @@
 | Validation | **Zod** | Validate API input and LLM output |
 | LLM | **OpenAI API** (GPT-4o-mini class) | Cheap, reliable JSON mode; swap later |
 | HTTP | **fetch** (or axios) | Keep dependencies minimal |
-| Deploy | **Vercel** (client) + **Render/Railway** (server) | Free tiers, zero-ops |
+| Deploy | **Vercel** (client) + **Render** (server) | Free tiers, zero-ops |
 | Tooling | **ESLint + Prettier + Vitest** | Standard quality baseline |
 
 ## Deliberately skipped for MVP
