@@ -1,41 +1,28 @@
-# whatIf — Docs Index
+# whatIf — Documentation
 
-## Phase 1 — Product Definition & MVP Scope
-- [01 Product Definition](./phase-1/01-product-definition.md)
-- [02 MVP Scope](./phase-1/02-mvp-scope.md)
-- [03 User Flow](./phase-1/03-user-flow.md)
-- [04 Success Metrics & Definition of Done](./phase-1/04-success-metrics.md)
-- [05 Decisions Log](./phase-1/05-decisions-log.md)
-- [06 Free Access & Usage Limits](./phase-1/06-free-access-and-limits.md)
+Index of the product, tech, and process docs. For the project overview, stack, and
+getting started, see the [root README](../README.md).
+
+## Product — Phase 1
+
+| Doc | Covers |
+|---|---|
+| [01 Product Definition](./phase-1/01-product-definition.md) | Problem, solution, target user, non-goals |
+| [02 MVP Scope](./phase-1/02-mvp-scope.md) | The five shipping features, feature levels, constraints |
+| [03 User Flow](./phase-1/03-user-flow.md) | Screens, happy path, loading/error/guardrail states |
+| [04 Success Metrics](./phase-1/04-success-metrics.md) | North-star metric and definition of done |
+| [05 Decisions Log](./phase-1/05-decisions-log.md) | Locked decisions D1–D13 and their status |
+| [06 Free Access & Limits](./phase-1/06-free-access-and-limits.md) | Rate limits, cost caps, anti-abuse |
 
 ## Tech
-- [Tech Stack](./tech/stack.md)
-- [Architecture](./tech/architecture.md)
 
-## Folder Structure
-```
-whatif/
-├── client/                 # React + TS (Vite) web app
-│   ├── public/             # static assets
-│   └── src/
-│       ├── components/     # shared UI (Button, Card, Spinner...)
-│       ├── features/       # one folder per feature
-│       │   ├── dilemma/    # dilemma input screen
-│       │   ├── questions/  # follow-up questions screen
-│       │   └── results/    # results screen + share
-│       ├── lib/            # api client, helpers, validation
-│       ├── services/       # calls to our backend
-│       ├── styles/         # global styles / theme
-│       └── types/          # shared TS types
-├── server/                 # Node + Express + TS API
-│   └── src/
-│       ├── routes/         # URL -> controller mapping
-│       ├── controllers/    # request/response handling
-│       ├── services/       # business logic + LLM calls
-│       ├── prompts/        # versioned prompt templates
-│       ├── middleware/     # validation, errors, rate limit
-│       ├── config/         # env + constants
-│       └── types/          # shared TS types
-├── docs/                   # this folder
-└── README.md
-```
+| Doc | Covers |
+|---|---|
+| [Stack](./tech/stack.md) | Chosen tools and rationale |
+| [Architecture](./tech/architecture.md) | Client/server split, API contract, LLM output shape |
+
+## Process
+
+| Doc | Covers |
+|---|---|
+| [Git Strategy](./GIT_STRATEGY.md) | Branch naming, commit conventions, workflow |
