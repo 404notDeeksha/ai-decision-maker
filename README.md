@@ -1,28 +1,164 @@
 # whatIf
 
-An AI-powered decision-making app.
+**Structured clarity in under a minute**
 
-## Vision
-
-Help people make better decisions by combining structured frameworks with AI:
-
-- **Frame** — break a fuzzy decision into clear options, criteria, and constraints.
-- **Weigh** — assign importance to criteria and score each option.
-- **Challenge** — let the AI stress-test assumptions, surface blind spots, and argue the other side.
-- **Decide** — get a ranked recommendation with reasoning you can inspect.
+whatIf is a free web app for everyday dilemmas (job A vs job B, buy vs rent, move vs
+stay). You describe the decision, answer a few targeted questions, and get a structured
+analysis with a recommendation you can inspect — not a generic answer from whoever you
+happened to ask.
 
 ## Status
 
-Early days — scaffolding. Nothing built yet.
+**Phase 1 complete — product definition and MVP scope are frozen. Build has not started.**
+
+The repository currently contains documentation and the client/server folder scaffold
+(`.gitkeep` placeholders only). There is no runnable app yet — see
+[Getting Started](#getting-started).
+
+## How it works
+
+```
+[Input]  describe your dilemma
+   ↓
+[Questions]  2–4 AI follow-ups (priorities, constraints, what matters most)
+   ↓
+[Results]  structured analysis
+   ↓
+Reset ↺   |   Share ↗ (copy text / post to X)
+```
+
+Every result contains, in order:
+
+1. **Restated dilemma** — confirms the AI understood you
+2. **Priorities & constraints** — what actually matters here
+3. **Options** — 2–4 options with pros, cons, and trade-offs
+4. **Blind spot** — one likely thing you're missing
+5. **Recommendation** — the choice, the reasoning, and what would change it
+
+## Features (MVP / L1)
+
+- **Dilemma input** — one free-text box, 500-character cap
+- **Targeted follow-ups** — AI extracts options and asks 2–4 questions
+- **Results screen** — the five-part structured analysis above
+- **Reset** — "Start over" clears everything in one click
+- **Share** — copy result text and a share link for X (text only; image card later)
+
+**Deliberately out of scope:** accounts, saved history, dashboards, editing answers,
+PDF export, teams, multi-language, native app, payments.
+
+## Tech stack
+
+| Layer | Choice |
+|---|---|
+| Frontend | React + TypeScript + Vite |
+| Styling | Tailwind CSS |
+| State | React state + one small context (no Redux) |
+| Backend | Node.js + Express + TypeScript |
+| Validation | Zod (API input and LLM output) |
+| LLM | OpenAI, GPT-4o-mini class (JSON mode) |
+| Deploy | Vercel (client) + Render (server) |
+| Tooling | ESLint + Prettier + Vitest |
+
+**No database in the MVP.** The client holds the conversation transcript; the server is
+stateless.
+
+## Architecture
+
+- **Client** owns all state and sends the dilemma + transcript with each request.
+- **Server** owns prompts and validation: `routes → controllers → services → LLM client`.
+- **One endpoint, two calls:**
+
+| Method | Path | Request | Returns |
+|---|---|---|---|
+| POST | `/api/analyze` | `{ dilemma }` | `{ options, questions }` |
+| POST | `/api/analyze` | `{ dilemma, answers }` | full structured analysis |
+
+The LLM returns JSON, which Zod validates before it reaches the UI:
+
+```ts
+{
+  restatement,
+  priorities[], constraints[],
+  options: [{ name, pros[], cons[], tradeoffs[] }],
+  blindSpot,
+  recommendation: { choice, reasoning, changeIf[] }
+}
+```
+
+See [`docs/tech/architecture.md`](docs/tech/architecture.md).
+
+## Free access & limits
+
+whatIf is free — no login, no paywall, no ads. Limits exist only to keep LLM cost
+sustainable:
+
+| Limit | Value |
+|---|---|
+| Input length | 500 characters |
+| Follow-ups per analysis | 2–4 |
+| Requests per IP | 10 / hour, 30 / day |
+| Global daily cap | 1,000 analyses / day |
+| LLM calls per analysis | ≤ 2 |
+
+Users see a friendly message when a limit is hit, and never lose their typed dilemma.
+See [`docs/phase-1/06-free-access-and-limits.md`](docs/phase-1/06-free-access-and-limits.md).
 
 ## Getting Started
 
-_Coming soon._
+Nothing to run yet. The app is expected to be a two-package monorepo:
+
+```bash
+# planned once scaffolding lands
+npm install --prefix client && npm install --prefix server
+npm run dev --prefix client   # Vite dev server
+npm run dev --prefix server   # Express API
+```
+
+The server will need an `OPENAI_API_KEY` in `server/.env`.
+
+## Repository structure
+
+```
+whatIf/
+├── client/                 # React + TS (Vite) web app
+│   └── src/
+│       ├── components/     # shared UI
+│       ├── features/       # dilemma/ · questions/ · results/
+│       ├── lib/            # api client, helpers, validation
+│       ├── services/       # backend calls
+│       ├── styles/         # global styles / theme
+│       └── types/          # shared TS types
+├── server/                 # Node + Express + TS API
+│   └── src/
+│       ├── routes/         # URL → controller mapping
+│       ├── controllers/    # request/response handling
+│       ├── services/       # business logic + LLM calls
+│       ├── prompts/        # versioned prompt templates
+│       ├── middleware/     # validation, errors, rate limit
+│       ├── config/         # env + constants
+│       └── types/          # shared TS types
+├── docs/                   # product, tech, and process docs
+└── README.md
+```
 
 ## Roadmap
 
-- [ ] Define the core decision model (options, criteria, weights, scores)
-- [ ] Design the scoring / ranking engine
-- [ ] Integrate an LLM for challenge + reasoning
-- [ ] Build the UI
-- [ ] Persist decisions so they can be revisited
+- [x] Phase 1 — product definition, MVP scope, user flow, success metrics, decisions
+- [x] Phase 1 — tech stack, architecture, API contract
+- [ ] Scaffold client and server (build tooling, lint, test setup)
+- [ ] `POST /api/analyze` with Zod-validated LLM output
+- [ ] Three screens: input → questions → results, with loading/error states
+- [ ] Rate limiting, input caps, global daily cap
+- [ ] Deploy and validate with real users
+
+## Documentation
+
+Start at the [docs index](docs/README.md), or jump straight to:
+
+- [Product definition](docs/phase-1/01-product-definition.md) · [MVP scope](docs/phase-1/02-mvp-scope.md) · [User flow](docs/phase-1/03-user-flow.md)
+- [Decisions log](docs/phase-1/05-decisions-log.md) · [Free access & limits](docs/phase-1/06-free-access-and-limits.md)
+- [Tech stack](docs/tech/stack.md) · [Architecture](docs/tech/architecture.md) · [Git strategy](docs/GIT_STRATEGY.md)
+
+## License
+
+Not yet specified.
