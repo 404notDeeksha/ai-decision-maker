@@ -4,7 +4,7 @@ Lock these before writing code. Update status as we go.
 
 | # | Decision | Choice | Status |
 |---|----------|--------|--------|
-| D1 | Number of follow-up questions | 2–4, AI-generated | Decided |
+| D1 | Number of follow-up questions | 0–4, AI-generated, only when needed | Amended by P2-D3 |
 | D2 | Options count supported | 2–4 | Decided |
 | D3 | State handling | Client holds transcript; server stateless (no DB) | Decided |
 | D4 | Auth | None for MVP | Decided |

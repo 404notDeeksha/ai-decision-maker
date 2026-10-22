@@ -4,7 +4,7 @@
 ```
 [Screen 1: Input]        type dilemma → Send
         ↓
-[Screen 2: Questions]    answer 2–4 follow-ups → Analyze
+[Screen 2: Questions]    answer 0–4 follow-ups → Analyze
         ↓
 [Screen 3: Results]      read structured analysis
         ↓
@@ -13,7 +13,7 @@
 
 ## Screens
 **1. Input** — headline, one textarea, primary button. Placeholder shows an example dilemma.
-**2. Questions** — one question at a time (or short form); progress indicator; Back to edit.
+**2. Questions** — zero to four questions (skipped when the input is enough); one at a time; progress indicator; Back to edit. _Amended by Phase 2 P2-D3._
 **3. Results** — card sections in fixed order; "Start over" and "Share" actions.
 
 ## States to design now (cheap, avoids rework)

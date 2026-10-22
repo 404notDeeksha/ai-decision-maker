@@ -8,10 +8,10 @@ LLM cost and keep it free for everyone — not to upsell.
 | Limit | Value | Reason |
 |-------|-------|--------|
 | Input length | 500 characters | Bound prompt size/cost |
-| Follow-up questions | 2–4 (AI-generated) | Fixed, predictable cost |
+| Follow-up questions | 0–4 (AI-generated, only when needed) | Skipped when input is sufficient; bounded cost |
 | Requests per IP | 10 / hour, 30 / day | Stop abuse from a viral post |
 | Global daily cap | 1,000 analyses / day (tune) | Hard ceiling on spend |
-| LLM calls per analysis | ≤ 2 (questions, then result) | Cost predictability |
+| LLM calls per analysis | 1–2 (skip questions when input is enough) | Lowest cost; see Phase 2 P2-D5 |
 | Model | Cheapest capable (GPT-4o-mini class) | ~cents per session |
 | Transcript tokens | Truncate/trim before send | Prevent runaway prompts |
 

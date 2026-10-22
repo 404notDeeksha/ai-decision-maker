@@ -2,7 +2,7 @@
 
 ## In scope — the 5 features that ship
 1. **Dilemma input** — one free-text box ("What are you deciding?").
-2. **Targeted follow-ups** — AI extracts 2–4 options and asks 2–4 questions (priorities, constraints, what matters most).
+2. **Targeted follow-ups** — AI extracts 2–4 options and asks **0–4** questions (priorities, constraints, what matters most), only when the input is missing something. _Amended by Phase 2 P2-D3._
 3. **Results screen** — renders the structured output (restatement, priorities, pros/cons, blind spot, recommendation).
 4. **Reset** — "Start over" clears everything in one click.
 5. **Share** — copy result text + share link for X (text only in L1; image card later).
