@@ -14,6 +14,18 @@ getting started, see the [root README](../README.md).
 | [05 Decisions Log](./phase-1/05-decisions-log.md) | Locked decisions D1–D13 and their status |
 | [06 Free Access & Limits](./phase-1/06-free-access-and-limits.md) | Rate limits, cost caps, anti-abuse |
 
+## Product — Phase 2
+
+| Doc | Covers |
+|---|---|
+| [Phase 2 Plan](./phase-2/README.md) | Two tracks, execution order, exit criteria |
+| [01 Decisions](./phase-2/01-decisions.md) | Locked UI/UX and AI behaviour decisions |
+| [02 User Journey](./phase-2/02-user-journey.md) | End-to-end flow, shortcuts, edge states |
+| [03 Wireframes](./phase-2/03-wireframes.md) | Low-fidelity mobile screens |
+| [04 AI Workflow](./phase-2/04-ai-workflow.md) | Call logic, question→result matrix, output contract |
+| [05 System Prompt](./phase-2/05-system-prompt.md) | Initial prompt draft |
+| [06 Test Dilemmas](./phase-2/06-test-dilemmas.md) | Three cases and pass criteria |
+
 ## Tech
 
 | Doc | Covers |

@@ -9,7 +9,8 @@ happened to ask.
 
 ## Status
 
-**Phase 1 complete — product definition and MVP scope are frozen. Build has not started.**
+**Phase 1 complete. Phase 2 (UI/UX + AI behaviour design) decisions are locked; the prompt
+still needs validation against the test dilemmas. Build has not started.**
 
 The repository currently contains documentation and the client/server folder scaffold
 (`.gitkeep` placeholders only). There is no runnable app yet — see
@@ -20,7 +21,7 @@ The repository currently contains documentation and the client/server folder sca
 ```
 [Input]  describe your dilemma
    ↓
-[Questions]  2–4 AI follow-ups (priorities, constraints, what matters most)
+[Questions]  0–4 AI follow-ups, only if something is missing
    ↓
 [Results]  structured analysis
    ↓
@@ -38,7 +39,7 @@ Every result contains, in order:
 ## Features (MVP / L1)
 
 - **Dilemma input** — one free-text box, 500-character cap
-- **Targeted follow-ups** — AI extracts options and asks 2–4 questions
+- **Targeted follow-ups** — AI extracts options and asks 0–4 questions, only when needed
 - **Results screen** — the five-part structured analysis above
 - **Reset** — "Start over" clears everything in one click
 - **Share** — copy result text and a share link for X (text only; image card later)
@@ -66,12 +67,14 @@ stateless.
 
 - **Client** owns all state and sends the dilemma + transcript with each request.
 - **Server** owns prompts and validation: `routes → controllers → services → LLM client`.
-- **One endpoint, two calls:**
+- **One endpoint, 1–2 calls:**
 
 | Method | Path | Request | Returns |
 |---|---|---|---|
-| POST | `/api/analyze` | `{ dilemma }` | `{ options, questions }` |
-| POST | `/api/analyze` | `{ dilemma, answers }` | full structured analysis |
+| POST | `/api/analyze` | `{ dilemma }` | full analysis **or** `{ questions }` if info is missing |
+| POST | `/api/analyze` | `{ dilemma, questions, answers }` | full structured analysis |
+
+Questions are asked only when the first call determines the input is insufficient.
 
 The LLM returns JSON, which Zod validates before it reaches the UI:
 
@@ -95,10 +98,10 @@ sustainable:
 | Limit | Value |
 |---|---|
 | Input length | 500 characters |
-| Follow-ups per analysis | 2–4 |
+| Follow-ups per analysis | 0–4 (only when needed) |
 | Requests per IP | 10 / hour, 30 / day |
 | Global daily cap | 1,000 analyses / day |
-| LLM calls per analysis | ≤ 2 |
+| LLM calls per analysis | 1–2 |
 
 Users see a friendly message when a limit is hit, and never lose their typed dilemma.
 See [`docs/phase-1/06-free-access-and-limits.md`](docs/phase-1/06-free-access-and-limits.md).
@@ -145,6 +148,8 @@ whatIf/
 
 - [x] Phase 1 — product definition, MVP scope, user flow, success metrics, decisions
 - [x] Phase 1 — tech stack, architecture, API contract
+- [x] Phase 2 — user journey, wireframes, AI workflow, system prompt, decisions
+- [ ] Phase 2 — validate the prompt against the three test dilemmas
 - [ ] Scaffold client and server (build tooling, lint, test setup)
 - [ ] `POST /api/analyze` with Zod-validated LLM output
 - [ ] Three screens: input → questions → results, with loading/error states
@@ -157,6 +162,7 @@ Start at the [docs index](docs/README.md), or jump straight to:
 
 - [Product definition](docs/phase-1/01-product-definition.md) · [MVP scope](docs/phase-1/02-mvp-scope.md) · [User flow](docs/phase-1/03-user-flow.md)
 - [Decisions log](docs/phase-1/05-decisions-log.md) · [Free access & limits](docs/phase-1/06-free-access-and-limits.md)
+- [Phase 2 decisions](docs/phase-2/01-decisions.md) · [User journey](docs/phase-2/02-user-journey.md) · [AI workflow](docs/phase-2/04-ai-workflow.md)
 - [Tech stack](docs/tech/stack.md) · [Architecture](docs/tech/architecture.md) · [Git strategy](docs/GIT_STRATEGY.md)
 
 ## License
