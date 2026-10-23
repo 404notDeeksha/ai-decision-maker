@@ -1,6 +1,6 @@
 # Phase 2 — UI/UX + AI Behaviour Design
 
-**Status:** complete and frozen. Decisions locked; prompt validated against all eight cases.
+**Status:** complete and frozen. Decisions locked; prompt validated against all eight cases (T7 with a minor brevity overrun).
 
 **Goal:** define exactly what the user sees and how the AI decides *before* implementation.
 

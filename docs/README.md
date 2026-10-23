@@ -3,6 +3,8 @@
 Index of the product, tech, and process docs. For the project overview, stack, and
 getting started, see the [root README](../README.md).
 
+**Progress:** Phase 1 complete · Phase 2 complete and frozen · Phase 3 (build) not started.
+
 ## Product — Phase 1
 
 | Doc | Covers |

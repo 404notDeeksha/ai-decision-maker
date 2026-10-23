@@ -19,6 +19,8 @@ Locked on 2026-10-22. These govern UI/UX and AI behaviour until revised.
 - **P2-D3 supersedes Phase 1 D1** for question count: 2–4 fixed becomes **0–4, only when needed**. All other Phase 1 decisions stand.
 - P2-D5 remains inside the Phase 1 limit of ≤ 2 LLM calls per analysis.
 
-## Open items
+## Validation
 
-- Run the system prompt against the three test dilemmas. `README.md` stays "in progress" until that is done.
+The system prompt was run against all eight cases in
+[06-test-runs.md](./06-test-runs.md) and passed (T7 with a minor brevity overrun).
+Phase 2 was frozen on 2026-10-23.

@@ -1,4 +1,7 @@
-# 05 — System Prompt (Draft)
+# 05 — System Prompt (Frozen)
+
+Validated against all eight test cases on 2026-10-23. See
+[06-test-runs.md](./06-test-runs.md). Any later change is a new decision, not a Phase 2 edit.
 
 Single prompt. The server adds `mode: "assess"` for Call 1 and `mode: "analyze"` for Call 2.
 
