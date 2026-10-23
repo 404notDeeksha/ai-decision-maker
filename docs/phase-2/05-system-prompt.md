@@ -43,6 +43,8 @@ Otherwise return:
 ]}
 
 Never return both questions and an analysis. Never return more than 4 questions.
+Return **at most one question per `feeds` value**. If two questions would fill the
+same field, keep only the one that changes the decision more and drop the other.
 
 **Before returning `complete`, audit your own answer.** If the blind spot or any
 inferred priority could change the recommended choice, return `needs_info` with

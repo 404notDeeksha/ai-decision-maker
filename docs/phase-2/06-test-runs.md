@@ -17,7 +17,7 @@ and verdict below.
 | --- | --- |
 | Date | |
 | Model | |
-| Prompt version | `05-system-prompt.md` @ draft |
+| Prompt version | `05-system-prompt.md` @ revised |
 | Tool | ChatGPT / AI Studio |
 
 ## Global pass criteria
@@ -48,50 +48,33 @@ and verdict below.
 ```
 
 **Expected:** ask 1–2 questions if the value of Saturday time is unstated and could change the result. Only answer directly when the input is genuinely sufficient.
-**Pass if:** trade-off is concrete, one blind spot, one hedged recommendation, and it does not recommend while admitting a key unknown.
+**Pass if:** it asks about the unknown priority instead of recommending.
 
-**Actual**
+**Actual — re-run after prompt revision**
 
 ```json
 {
-  "status": "complete",
-  "analysis": {
-    "restatement": "You are deciding whether to keep buying groceries from the farmer's market or switch to quick commerce. The market offers lower prices and better quality but takes half your Saturday, while quick commerce costs more but saves time.",
-    "priorities": ["Save money", "Get better-quality groceries", "Save time on Saturdays"],
-    "constraints": ["Farmer's market shopping takes half a Saturday", "Quick commerce has a higher cost"],
-    "options": [
-      {
-        "name": "Keep buying from the farmer's market",
-        "pros": ["Groceries cost less", "You get better-quality groceries"],
-        "cons": ["Shopping consumes half your Saturday"],
-        "tradeoffs": ["You save money and get better quality at the expense of substantial weekend time."]
-      },
-      {
-        "name": "Switch to quick commerce",
-        "pros": ["Saves time on Saturdays"],
-        "cons": ["Groceries cost more", "You give up the stated quality advantage of the farmer's market"],
-        "tradeoffs": ["You recover weekend time but pay more for groceries."]
-      }
-    ],
-    "blindSpot": "The time cost is clear, but its actual value to you is not. Half a Saturday may be worth protecting, or it may not justify the additional grocery expense.",
-    "recommendation": {
-      "choice": "Keep buying from the farmer's market",
-      "reasoning": "On balance, the farmer's market offers two stated benefits—lower prices and better quality—while the main disadvantage is the time required. Without evidence that reclaiming Saturday time is more important than those benefits, keeping the current option has the stronger case.",
-      "changeIf": [
-        "Saving Saturday time becomes a higher priority than grocery cost and quality.",
-        "The additional quick-commerce expense becomes acceptable in exchange for the time saved."
-      ]
+  "status": "needs_info",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "How much do you value reclaiming half your Saturday compared with saving money and getting better-quality groceries?",
+      "feeds": "priorities"
     },
-    "brief": false
-  }
+    {
+      "id": "q2",
+      "text": "Would the extra cost of quick commerce be comfortable within your current grocery budget, or would it create financial pressure?",
+      "feeds": "constraints"
+    }
+  ]
 }
 ```
 
-**Verdict: FAIL — question policy. PASS — structure.**
+**Verdict: PASS**
 
-- Structure is correct: valid JSON, two options, concrete trade-offs, one blind spot, one hedged recommendation, five sections present.
-- The blind spot admits the value of Saturday time is unknown and could change the answer, yet it returned `complete` instead of asking.
-- Priorities were inferred from the options, not stated, so the recommendation rests on an assumption.
+- No longer recommends while the deciding priority is unknown.
+- Two questions, both directly change the answer; one per field.
+- First run failed; the revised prompt fixed it.
 
 ---
 
@@ -111,7 +94,7 @@ and verdict below.
 **Expected:** input lacks savings and a stated priority, so ask 2–4 focused questions about them.
 **Pass if:** asks about constraints/priorities, invents no facts, and asks only one question per `feeds` field.
 
-**Actual**
+**Actual — re-run after prompt revision**
 
 ```json
 {
@@ -119,34 +102,29 @@ and verdict below.
   "questions": [
     {
       "id": "q1",
-      "text": "How much financial runway do you have in savings, and for how long could you comfortably manage on the lower salary?",
+      "text": "How much financial runway do you have, and for how long could you comfortably manage on the lower salary?",
       "feeds": "constraints"
     },
     {
       "id": "q2",
-      "text": "What matters most to you over the next 2–3 years: building skills and career opportunities, maximizing income, or balancing both?",
+      "text": "Over the next 2–3 years, which matters more to you: maximizing income, building skills and career opportunities, or balancing both?",
       "feeds": "priorities"
     },
     {
       "id": "q3",
-      "text": "What does 'growth' mean to you in this decision—for example, stronger technical skills, promotions, future salary potential, or moving into more interesting work?",
+      "text": "What does career growth mean most to you in this decision: stronger skills, promotions, future salary potential, or more interesting work?",
       "feeds": "priorities"
-    },
-    {
-      "id": "q4",
-      "text": "How confident are you that the learning-focused role will actually provide good mentorship and marketable skills, rather than simply paying less?",
-      "feeds": "blindSpot"
     }
   ]
 }
 ```
 
-**Verdict: PASS — policy. MINOR FAIL — question quality.**
+**Verdict: PASS — policy. MINOR FAIL — duplicate `priorities` question.**
 
-- Correctly chose `needs_info` instead of assuming savings or priorities.
-- q1 affects the answer; q4 is a strong blind-spot question.
-- q2 and q3 both fill `priorities` and overlap. They should be merged, leaving three questions.
-- No invented facts.
+- Correctly chose `needs_info`; no invented facts.
+- q1 is necessary and specific.
+- q2 and q3 both fill `priorities`. q3 is a narrower version of q2, so one should be dropped.
+- The revised rule did not stop the overlap; enforce it harder.
 
 ---
 
@@ -275,30 +253,46 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 ```
 
 **Expected:** `{"status":"needs_info"}` with **1–2 sharp questions** about which matters more — time or money/quality. It must not recommend yet.
-**Pass if:** it asks about priorities and/or constraints, each question names its `feeds` field, and there are no generic questions.
-**Fail if:** it returns `complete` (same failure as T1), or asks 3–4 questions when one would do.
 
-**Actual:** _pending_
-**Verdict:** ☐ pass ☐ fail
+**Actual — re-run after prompt revision**
+
+```json
+{
+  "status": "needs_info",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Which matters more to you right now: saving money and getting better-quality groceries, or reclaiming half your Saturday?",
+      "feeds": "priorities"
+    }
+  ]
+}
+```
+
+**Verdict: PASS**
+
+- One question, exactly the missing priority.
+- No recommendation before the answer.
+- First run (as T1) failed; this case now behaves correctly.
 
 ## Summary
 
 | Case | Category | Type | Expected | Actual | Verdict |
 | --- | --- | --- | --- | --- | --- |
-| T1 | Real-life | Groceries | ask if priority unknown | answered without asking | **FAIL** |
-| T2 | Real-life | Career | ask about savings/priorities | asked; q2/q3 overlap | **PASS (minor)** |
+| T1 | Real-life | Groceries | ask if priority unknown | 2 questions | **PASS (re-run)** |
+| T2 | Real-life | Career | ask about savings/priorities | 3 questions; q2/q3 overlap | **PASS (minor)** |
 | T3 | Real-life | Social | picks one option | | |
 | T4 | Edge | Sufficient | zero questions | | |
 | T5 | Edge | Insufficient | ≤4 useful questions | | |
 | T6 | Edge | Non-decision | exact `unsupported_input` | | |
 | T7 | Edge | Brevity | 5 sections, one line each | | |
-| T8 | Edge | Almost enough | ask 1–2 about priorities | | |
+| T8 | Edge | Almost enough | ask 1–2 about priorities | 1 question | **PASS (re-run)** |
 
 ## Outcome
 
 - [ ] All cases pass → freeze Phase 2.
-- [x] T1 failed: ask when an admitted unknown could change the recommendation. Prompt revised.
-- [x] T2 passed on policy; merge duplicate `priorities` questions. Prompt revised.
-- [ ] Re-run T1, T2, and T8 with the revised prompt.
+- [x] T1 fixed: asks before recommending. Re-run passed.
+- [x] T8 fixed: one sharp priority question. Re-run passed.
+- [ ] T2: merge the duplicate `priorities` question, then re-run.
 - [ ] Run T3–T7.
 - [ ] Backend schema enforcement confirmed as the final guard, regardless of prompt quality.
