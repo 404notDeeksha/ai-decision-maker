@@ -89,8 +89,17 @@ Rules for the analysis:
 - Reference the user's priorities in the reasoning.
 - Hedge lightly: "on balance", "the stronger case is". Never "definitely",
   "obviously", or "you must".
-- If the user asked for a short answer, set "brief": true and keep each
-  section to roughly one line. Never remove a section.
+- If the user asked for a short answer, set "brief": true and keep every
+  section to one line:
+  - restatement: one sentence.
+  - priorities, constraints, changeIf: at most 2 short items each.
+  - each option: one line with name, one pro, one con, one trade-off.
+  - blindSpot: one sentence.
+  - recommendation: choice plus one sentence.
+  Never remove a section.
+- Never use placeholder values such as "not explicitly stated", "unknown", or
+  "N/A" in `priorities` or `constraints`. Leave the array empty when nothing
+  is known. Do not list missing information as if it were a fact.
 - If the input is not a decision, return:
   {"error":"unsupported_input","message":"This doesn't look like a decision. Try rephrasing."}
 

@@ -144,8 +144,25 @@ and verdict below.
 **Expected:** rest vs relational cost, one blind spot, no moralising.
 **Pass if:** it picks an option instead of refusing to choose.
 
-**Actual:** _pending_
-**Verdict:** ☐ pass ☐ fail
+**Actual**
+
+```json
+{
+  "status": "needs_info",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "If you stay home tonight, how significant would the likely relational cost be—for example, would your friend feel genuinely let down, or is this mainly a worry about missing out?",
+      "feeds": "blindSpot"
+    }
+  ]
+}
+```
+
+**Verdict: PASS**
+
+- Asks before recommending, which fits the missing relational context.
+- One question, and it targets the real unknown rather than restating the dilemma.
 
 ---
 
@@ -165,8 +182,60 @@ and verdict below.
 **Expected:** `{"status":"complete", ...}` with **no** `needs_info`.
 **Pass if:** exactly zero questions, full analysis returned in call 1.
 
-**Actual:** _pending_
-**Verdict:** ☐ pass ☐ fail
+**Actual**
+
+```json
+{
+  "status": "complete",
+  "analysis": {
+    "restatement": "You are deciding whether to move to Bengaluru for a higher-paying job with stronger mentorship or stay in Pune in a stable role closer to family. Learning matters most to you, and you have six months of savings and the option to move back within a year.",
+    "priorities": ["Learning matters most", "Stay connected to family", "Improve compensation"],
+    "constraints": [
+      "Bengaluru rent is approximately ₹10,000 more per month",
+      "The new role requires three days in the office",
+      "You have six months of savings"
+    ],
+    "options": [
+      {
+        "name": "Move to Bengaluru",
+        "pros": [
+          "Stronger mentorship aligns with your top priority",
+          "Salary increases from 15 LPA to 18 LPA"
+        ],
+        "cons": ["Higher rent and relocation costs", "Greater distance from family"],
+        "tradeoffs": [
+          "You prioritize learning and higher compensation over current stability and proximity to family."
+        ]
+      },
+      {
+        "name": "Stay in Pune",
+        "pros": ["Keep a stable job close to family", "Avoid relocation and higher rent"],
+        "cons": ["Give up the stated mentorship advantage", "Remain at the lower salary"],
+        "tradeoffs": [
+          "You retain stability and family proximity at the expense of the learning opportunity."
+        ]
+      }
+    ],
+    "blindSpot": "The higher salary does not automatically mean greater financial benefit once increased rent and relocation costs are included.",
+    "recommendation": {
+      "choice": "Move to Bengaluru",
+      "reasoning": "On balance, learning is your explicitly stated top priority, and the new role offers stronger mentorship and higher pay. Six months of savings and the option to return within a year provide some flexibility.",
+      "changeIf": [
+        "The mentorship or learning opportunities prove less substantial than expected",
+        "Relocation costs make the move financially uncomfortable",
+        "Moving significantly undermines a family priority you have not fully accounted for"
+      ]
+    },
+    "brief": false
+  }
+}
+```
+
+**Verdict: PASS (minor note)**
+
+- Zero questions, as required; all five sections present.
+- Recommendation is tied to the stated priority and hedged.
+- "Relocation costs" is inferred rather than stated. It is directly implied by moving, so it is acceptable here, but watch for this drifting into invented facts.
 
 ---
 
@@ -183,8 +252,35 @@ and verdict below.
 **Expected:** `{"status":"needs_info","questions":[...]}` with 0–4 questions, each naming `feeds`.
 **Pass if:** every question could change the recommendation; no generic "tell me more".
 
-**Actual:** _pending_
-**Verdict:** ☐ pass ☐ fail
+**Actual**
+
+```json
+{
+  "status": "needs_info",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "What is making you consider changing jobs, and what would you hope to improve by leaving?",
+      "feeds": "priorities"
+    },
+    {
+      "id": "q2",
+      "text": "What constraints would a job change need to respect, such as minimum salary, financial runway, location, or timing?",
+      "feeds": "constraints"
+    },
+    {
+      "id": "q3",
+      "text": "What are your current job and the realistic alternative you are considering?",
+      "feeds": "options"
+    }
+  ]
+}
+```
+
+**Verdict: PASS**
+
+- Three questions, one per field, all necessary for such a vague input.
+- No invented facts and no premature recommendation.
 
 ---
 
@@ -209,8 +305,18 @@ and verdict below.
 
 **Pass if:** exact error object, no fabricated analysis.
 
-**Actual:** _pending_
-**Verdict:** ☐ pass ☐ fail
+**Actual**
+
+```json
+{
+  "error": "unsupported_input",
+  "message": "This doesn't look like a decision. Try rephrasing."
+}
+```
+
+**Verdict: PASS**
+
+- Exact error object, no fabricated analysis.
 
 ---
 
@@ -232,8 +338,51 @@ and verdict below.
 **Expected:** `"brief": true`, all five sections, each roughly one line.
 **Pass if:** no section is dropped.
 
-**Actual:** _pending_
-**Verdict:** ☐ pass ☐ fail
+**Actual**
+
+```json
+{
+  "analysis": {
+    "restatement": "You are choosing between a lower-paying role with stronger mentorship and learning and a higher-paying role with repetitive work and limited growth.",
+    "priorities": ["Not explicitly stated", "Potential learning and career development", "Potential higher income"],
+    "constraints": ["Age 26", "No dependents", "Savings and financial runway are unknown"],
+    "options": [
+      {
+        "name": "Choose the learning-focused job",
+        "pros": ["Offers more learning and better mentorship"],
+        "cons": ["Pays less"],
+        "tradeoffs": ["Lower immediate income in exchange for potential long-term skill development."]
+      },
+      {
+        "name": "Choose the higher-paying job",
+        "pros": ["Pays significantly more"],
+        "cons": ["Repetitive work and limited growth"],
+        "tradeoffs": ["Higher immediate income in exchange for potentially slower skill development."]
+      }
+    ],
+    "blindSpot": "The learning-focused role could remain underpaid without translating its mentorship and skill development into better future opportunities.",
+    "recommendation": {
+      "choice": "Choose the learning-focused job",
+      "reasoning": "On balance, the learning-focused role may offer compounding career benefits, but your priorities and financial runway are unknown. This choice is provisional rather than grounded in a stated preference.",
+      "changeIf": [
+        "Your financial runway cannot comfortably support the lower salary",
+        "Maximizing near-term income is your main priority",
+        "The learning-focused role lacks credible development opportunities"
+      ]
+    },
+    "brief": true
+  }
+}
+```
+
+**Verdict: FAIL**
+
+- `brief: true` is set, but the sections are not one line each. Options, priorities, constraints, and `changeIf` all run long.
+- "Not explicitly stated" is used as a `priorities` value. Unknowns must be an empty array, not a placeholder.
+- Unknowns are listed as `constraints`, which blurs facts with gaps.
+- The recommendation is honest about being provisional, which is good.
+
+**Fix needed:** define `brief` concretely and forbid placeholder values.
 
 ---
 
@@ -281,11 +430,11 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 | --- | --- | --- | --- | --- | --- |
 | T1 | Real-life | Groceries | ask if priority unknown | 2 questions | **PASS (re-run)** |
 | T2 | Real-life | Career | ask about savings/priorities | 3 questions; one per field | **PASS (re-run)** |
-| T3 | Real-life | Social | picks one option | | |
-| T4 | Edge | Sufficient | zero questions | | |
-| T5 | Edge | Insufficient | ≤4 useful questions | | |
-| T6 | Edge | Non-decision | exact `unsupported_input` | | |
-| T7 | Edge | Brevity | 5 sections, one line each | | |
+| T3 | Real-life | Social | picks one option | asked 1 blind-spot question | **PASS** |
+| T4 | Edge | Sufficient | zero questions | zero questions | **PASS (minor)** |
+| T5 | Edge | Insufficient | ≤4 useful questions | 3 questions, one per field | **PASS** |
+| T6 | Edge | Non-decision | exact `unsupported_input` | exact error | **PASS** |
+| T7 | Edge | Brevity | 5 sections, one line each | `brief: true` but verbose; placeholder priority | **FAIL** |
 | T8 | Edge | Almost enough | ask 1–2 about priorities | 1 question | **PASS (re-run)** |
 
 ## Outcome
@@ -294,5 +443,6 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 - [x] T1 fixed: asks before recommending. Re-run passed.
 - [x] T8 fixed: one sharp priority question. Re-run passed.
 - [x] T2 fixed: one question per field. Re-run passed.
-- [ ] Run T3–T7.
+- [x] T3–T6 passed.
+- [ ] T7 failed: `brief` not honored; placeholder priority. Prompt revised, re-run needed.
 - [ ] Backend schema enforcement confirmed as the final guard, regardless of prompt quality.
