@@ -90,11 +90,45 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 }
 ```
 
-**Expected:** options named, no invented savings/risk facts, recommendation tied to stated priorities.
-**Pass if:** does not assume facts the user never gave.
+**Expected:** input lacks savings and a stated priority, so ask 2–4 focused questions about them.
+**Pass if:** asks about constraints/priorities, invents no facts, and asks only one question per `feeds` field.
 
-**Actual:** _pending_
-**Verdict:** ☐ pass ☐ fail
+**Actual**
+
+```json
+{
+  "status": "needs_info",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "How much financial runway do you have in savings, and for how long could you comfortably manage on the lower salary?",
+      "feeds": "constraints"
+    },
+    {
+      "id": "q2",
+      "text": "What matters most to you over the next 2–3 years: building skills and career opportunities, maximizing income, or balancing both?",
+      "feeds": "priorities"
+    },
+    {
+      "id": "q3",
+      "text": "What does 'growth' mean to you in this decision—for example, stronger technical skills, promotions, future salary potential, or moving into more interesting work?",
+      "feeds": "priorities"
+    },
+    {
+      "id": "q4",
+      "text": "How confident are you that the learning-focused role will actually provide good mentorship and marketable skills, rather than simply paying less?",
+      "feeds": "blindSpot"
+    }
+  ]
+}
+```
+
+**Verdict: PASS — policy. MINOR FAIL — question quality.**
+
+- Correctly chose `needs_info` instead of assuming savings or priorities.
+- q1 affects the answer; q4 is a strong blind-spot question.
+- q2 and q3 both fill `priorities` and overlap. They should be merged, leaving three questions.
+- No invented facts.
 
 ---
 
@@ -222,7 +256,7 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 | Case | Type | Expected | Actual | Verdict |
 | --- | --- | --- | --- | --- |
 | T1 | Groceries | ask if priority unknown | answered without asking | **FAIL** |
-| T2 | Career | no invented facts | | |
+| T2 | Career | ask about savings/priorities | asked; q2/q3 overlap | **PASS (minor)** |
 | T3 | Social | picks one option | | |
 | T4 | Sufficient | zero questions | | |
 | T5 | Insufficient | ≤4 useful questions | | |
@@ -234,5 +268,6 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 
 - [ ] All cases pass → freeze Phase 2.
 - [x] T1 failed: ask when an admitted unknown could change the recommendation. Prompt revision pending.
-- [ ] Failures noted in the prompt doc, prompt revised, cases re-run.
+- [x] T2 passed on policy; merge duplicate `priorities` questions. Prompt revision pending.
+- [ ] Prompt revised, then T1/T2/T8 re-run.
 - [ ] Backend schema enforcement confirmed as the final guard, regardless of prompt quality.
