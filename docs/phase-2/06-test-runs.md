@@ -324,65 +324,22 @@ and verdict below.
 
 **Category:** Edge case (short answer)
 
-**Payload** — run T2's analysis with this appended:
+**Payload** — a complete dilemma, with brevity requested. This is a realistic "analyze" request; the earlier version forced `analyze` with no answers, which gave the AI nothing to summarize.
 
 ```json
 {
-  "mode": "analyze",
-  "dilemma": "I have two job offers. One pays less but I'd learn a lot and work with better mentors. The other pays significantly more but the work is repetitive with limited growth. I'm 26 and don't have dependents. Keep it short — one line per section.",
-  "questions": [],
-  "answers": []
+  "mode": "assess",
+  "dilemma": "Should I take a job in Bengaluru or stay in Pune? New offer: 18 LPA, stronger mentorship, 3 days in office. Current job: 15 LPA, stable, close to family. Learning matters most to me. My partner can relocate, we have six months of savings, and we could move back within a year. Rent in Bengaluru is about 10k more per month. Keep it short — one line per section."
 }
 ```
 
-**Expected:** `"brief": true`, all five sections, each roughly one line.
-**Pass if:** no section is dropped.
+**Expected:** `status: "complete"`, `"brief": true`, all five sections present.
+**Pass if:** no section is dropped; each section stays within the one-line limits, including at most 2 `changeIf` items; no placeholder values.
 
-**Actual**
+**Previous attempt — invalid test.** The old payload called `analyze` with no questions or answers. The model still returned `brief: true` but left "unknown" in `constraints` and returned 3 `changeIf` items. Recorded here as a design flaw, not a product failure.
 
-```json
-{
-  "analysis": {
-    "restatement": "You are choosing between a lower-paying role with stronger mentorship and learning and a higher-paying role with repetitive work and limited growth.",
-    "priorities": ["Not explicitly stated", "Potential learning and career development", "Potential higher income"],
-    "constraints": ["Age 26", "No dependents", "Savings and financial runway are unknown"],
-    "options": [
-      {
-        "name": "Choose the learning-focused job",
-        "pros": ["Offers more learning and better mentorship"],
-        "cons": ["Pays less"],
-        "tradeoffs": ["Lower immediate income in exchange for potential long-term skill development."]
-      },
-      {
-        "name": "Choose the higher-paying job",
-        "pros": ["Pays significantly more"],
-        "cons": ["Repetitive work and limited growth"],
-        "tradeoffs": ["Higher immediate income in exchange for potentially slower skill development."]
-      }
-    ],
-    "blindSpot": "The learning-focused role could remain underpaid without translating its mentorship and skill development into better future opportunities.",
-    "recommendation": {
-      "choice": "Choose the learning-focused job",
-      "reasoning": "On balance, the learning-focused role may offer compounding career benefits, but your priorities and financial runway are unknown. This choice is provisional rather than grounded in a stated preference.",
-      "changeIf": [
-        "Your financial runway cannot comfortably support the lower salary",
-        "Maximizing near-term income is your main priority",
-        "The learning-focused role lacks credible development opportunities"
-      ]
-    },
-    "brief": true
-  }
-}
-```
-
-**Verdict: FAIL**
-
-- `brief: true` is set, but the sections are not one line each. Options, priorities, constraints, and `changeIf` all run long.
-- "Not explicitly stated" is used as a `priorities` value. Unknowns must be an empty array, not a placeholder.
-- Unknowns are listed as `constraints`, which blurs facts with gaps.
-- The recommendation is honest about being provisional, which is good.
-
-**Fix needed:** define `brief` concretely and forbid placeholder values.
+**Actual:** _pending (redesigned)_
+**Verdict:** ☐ pass ☐ fail
 
 ---
 
@@ -434,7 +391,7 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 | T4 | Edge | Sufficient | zero questions | zero questions | **PASS (minor)** |
 | T5 | Edge | Insufficient | ≤4 useful questions | 3 questions, one per field | **PASS** |
 | T6 | Edge | Non-decision | exact `unsupported_input` | exact error | **PASS** |
-| T7 | Edge | Brevity | 5 sections, one line each | `brief: true` but verbose; placeholder priority | **FAIL** |
+| T7 | Edge | Brevity | 5 sections, one line each | test redesigned; re-run needed | **PENDING** |
 | T8 | Edge | Almost enough | ask 1–2 about priorities | 1 question | **PASS (re-run)** |
 
 ## Outcome
@@ -444,5 +401,5 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 - [x] T8 fixed: one sharp priority question. Re-run passed.
 - [x] T2 fixed: one question per field. Re-run passed.
 - [x] T3–T6 passed.
-- [ ] T7 failed: `brief` not honored; placeholder priority. Prompt revised, re-run needed.
+- [ ] T7: previous test was invalid (analyze with no answers). Redesigned; re-run needed.
 - [ ] Backend schema enforcement confirmed as the final guard, regardless of prompt quality.
