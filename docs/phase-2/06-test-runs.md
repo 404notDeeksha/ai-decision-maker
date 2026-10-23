@@ -338,8 +338,52 @@ and verdict below.
 
 **Previous attempt — invalid test.** The old payload called `analyze` with no questions or answers. The model still returned `brief: true` but left "unknown" in `constraints` and returned 3 `changeIf` items. Recorded here as a design flaw, not a product failure.
 
-**Actual:** _pending (redesigned)_
-**Verdict:** ☐ pass ☐ fail
+**Actual**
+
+```json
+{
+  "status": "complete",
+  "analysis": {
+    "restatement": "You are deciding whether to move to Bengaluru for a higher-paying job with stronger mentorship or stay in Pune in a stable job near family.",
+    "priorities": ["Learning matters most", "Maintain financial flexibility and family connections"],
+    "constraints": [
+      "Bengaluru rent costs about ₹10,000 more monthly",
+      "Six months of savings; your partner can relocate",
+      "You could move back within a year"
+    ],
+    "options": [
+      {
+        "name": "Move to Bengaluru",
+        "pros": ["Stronger mentorship supports your top priority", "Salary increases from 15 LPA to 18 LPA"],
+        "cons": ["Higher rent and relocation costs", "Greater distance from family"],
+        "tradeoffs": ["Gain learning opportunities while taking on relocation costs and change."]
+      },
+      {
+        "name": "Stay in Pune",
+        "pros": ["Keep job stability and proximity to family", "Avoid relocation and higher rent"],
+        "cons": ["Miss the stronger mentorship opportunity", "Remain at 15 LPA"],
+        "tradeoffs": ["Preserve stability at the expense of your stated learning priority."]
+      }
+    ],
+    "blindSpot": "Verify that the new role genuinely delivers stronger mentorship and learning before treating the move as a career investment.",
+    "recommendation": {
+      "choice": "Move to Bengaluru",
+      "reasoning": "On balance, learning is your top priority, and the new role offers stronger mentorship and higher pay; your savings and option to return provide some flexibility.",
+      "changeIf": [
+        "The mentorship or learning opportunity is weaker than promised.",
+        "The full relocation budget makes the move financially uncomfortable."
+      ]
+    },
+    "brief": true
+  }
+}
+```
+
+**Verdict: PASS (minor)**
+
+- `complete`, `brief: true`, all five sections, no placeholders, `changeIf` limited to two.
+- Slight overrun: 3 constraints and 2 pros/cons per option instead of the strict one-line limit. Acceptable for MVP; still compact.
+- No section dropped.
 
 ---
 
@@ -391,15 +435,17 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 | T4 | Edge | Sufficient | zero questions | zero questions | **PASS (minor)** |
 | T5 | Edge | Insufficient | ≤4 useful questions | 3 questions, one per field | **PASS** |
 | T6 | Edge | Non-decision | exact `unsupported_input` | exact error | **PASS** |
-| T7 | Edge | Brevity | 5 sections, one line each | test redesigned; re-run needed | **PENDING** |
+| T7 | Edge | Brevity | 5 sections, one line each | all 5 sections; compact, minor overrun | **PASS (minor)** |
 | T8 | Edge | Almost enough | ask 1–2 about priorities | 1 question | **PASS (re-run)** |
 
 ## Outcome
 
-- [ ] All cases pass → freeze Phase 2.
+- [x] All cases pass → Phase 2 frozen.
 - [x] T1 fixed: asks before recommending. Re-run passed.
 - [x] T8 fixed: one sharp priority question. Re-run passed.
 - [x] T2 fixed: one question per field. Re-run passed.
 - [x] T3–T6 passed.
-- [ ] T7: previous test was invalid (analyze with no answers). Redesigned; re-run needed.
+- [x] T7 passed with a minor brevity overrun.
 - [ ] Backend schema enforcement confirmed as the final guard, regardless of prompt quality.
+
+**Phase 2 frozen.** Any further prompt change is a new decision, not a Phase 2 edit.

@@ -1,6 +1,6 @@
 # Phase 2 — UI/UX + AI Behaviour Design
 
-**Status:** decisions locked, artifacts drafted, prompt not yet validated against the test dilemmas.
+**Status:** complete and frozen. Decisions locked; prompt validated against all eight cases.
 
 **Goal:** define exactly what the user sees and how the AI decides *before* implementation.
 
@@ -16,7 +16,7 @@
 1. Define the end-to-end user journey.
 2. Design the AI workflow in parallel.
 3. Connect both tracks: every question must feed a result field.
-4. Test the three example dilemmas.
+4. Test the three dilemmas plus edge cases.
 5. Freeze Phase 2 decisions before coding.
 
 Start with how the product works, not how it looks.
@@ -39,5 +39,5 @@ Start with how the product works, not how it looks.
 - [x] Every question maps to a result field.
 - [x] Wireframes cover happy path and edge states.
 - [x] AI workflow and system prompt drafted.
-- [ ] Prompt run against all three test dilemmas.
-- [ ] Results reviewed and Phase 2 frozen.
+- [x] Prompt run against all eight cases.
+- [x] Results reviewed and Phase 2 frozen.

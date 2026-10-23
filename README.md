@@ -9,8 +9,8 @@ happened to ask.
 
 ## Status
 
-**Phase 1 complete. Phase 2 (UI/UX + AI behaviour design) decisions are locked; the prompt
-still needs validation against the test dilemmas. Build has not started.**
+**Phase 1 complete. Phase 2 (UI/UX + AI behaviour design) is complete and frozen, with the
+prompt validated against all eight test cases. Build has not started.**
 
 The repository currently contains documentation and the client/server folder scaffold
 (`.gitkeep` placeholders only). There is no runnable app yet — see
@@ -149,7 +149,7 @@ whatIf/
 - [x] Phase 1 — product definition, MVP scope, user flow, success metrics, decisions
 - [x] Phase 1 — tech stack, architecture, API contract
 - [x] Phase 2 — user journey, wireframes, AI workflow, system prompt, decisions
-- [ ] Phase 2 — validate the prompt against the three test dilemmas
+- [x] Phase 2 — validate the prompt against the three test dilemmas and edge cases
 - [ ] Scaffold client and server (build tooling, lint, test setup)
 - [ ] `POST /api/analyze` with Zod-validated LLM output
 - [ ] Three screens: input → questions → results, with loading/error states
