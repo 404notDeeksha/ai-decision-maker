@@ -25,6 +25,7 @@ getting started, see the [root README](../README.md).
 | [04 AI Workflow](./phase-2/04-ai-workflow.md) | Call logic, question→result matrix, output contract |
 | [05 System Prompt](./phase-2/05-system-prompt.md) | Initial prompt draft |
 | [06 Test Dilemmas](./phase-2/06-test-dilemmas.md) | Three cases and pass criteria |
+| [07 Test Runs](./phase-2/07-test-runs.md) | Consolidated test sheet: dilemmas + edge cases |
 
 ## Tech
 

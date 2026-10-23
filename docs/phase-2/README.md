@@ -31,6 +31,7 @@ Start with how the product works, not how it looks.
 | [04 AI Workflow](./04-ai-workflow.md) | Call logic, question rules, output contract |
 | [05 System Prompt](./05-system-prompt.md) | Initial prompt draft |
 | [06 Test Dilemmas](./06-test-dilemmas.md) | The three cases and pass criteria |
+| [07 Test Runs](./07-test-runs.md) | One sheet for all cases and edge tests |
 
 ## Exit criteria
 
