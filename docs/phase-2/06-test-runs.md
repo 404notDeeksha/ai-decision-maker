@@ -102,29 +102,29 @@ and verdict below.
   "questions": [
     {
       "id": "q1",
-      "text": "How much financial runway do you have, and for how long could you comfortably manage on the lower salary?",
+      "text": "How much financial runway do you have in savings, and for how long could you comfortably manage on the lower salary?",
       "feeds": "constraints"
     },
     {
       "id": "q2",
-      "text": "Over the next 2–3 years, which matters more to you: maximizing income, building skills and career opportunities, or balancing both?",
+      "text": "Over the next 2–3 years, what matters most to you: maximizing income, building skills and career opportunities, or balancing both?",
       "feeds": "priorities"
     },
     {
       "id": "q3",
-      "text": "What does career growth mean most to you in this decision: stronger skills, promotions, future salary potential, or more interesting work?",
-      "feeds": "priorities"
+      "text": "How confident are you that the learning-focused role will deliver meaningful mentorship and marketable skills, rather than leaving you underpaid without sufficient career progress?",
+      "feeds": "blindSpot"
     }
   ]
 }
 ```
 
-**Verdict: PASS — policy. MINOR FAIL — duplicate `priorities` question.**
+**Verdict: PASS**
 
 - Correctly chose `needs_info`; no invented facts.
-- q1 is necessary and specific.
-- q2 and q3 both fill `priorities`. q3 is a narrower version of q2, so one should be dropped.
-- The revised rule did not stop the overlap; enforce it harder.
+- Three questions, one each for `constraints`, `priorities`, and `blindSpot` — no duplicates.
+- Every question could change the recommendation.
+- The earlier duplicate `priorities` question is gone.
 
 ---
 
@@ -280,7 +280,7 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 | Case | Category | Type | Expected | Actual | Verdict |
 | --- | --- | --- | --- | --- | --- |
 | T1 | Real-life | Groceries | ask if priority unknown | 2 questions | **PASS (re-run)** |
-| T2 | Real-life | Career | ask about savings/priorities | 3 questions; q2/q3 overlap | **PASS (minor)** |
+| T2 | Real-life | Career | ask about savings/priorities | 3 questions; one per field | **PASS (re-run)** |
 | T3 | Real-life | Social | picks one option | | |
 | T4 | Edge | Sufficient | zero questions | | |
 | T5 | Edge | Insufficient | ≤4 useful questions | | |
@@ -293,6 +293,6 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 - [ ] All cases pass → freeze Phase 2.
 - [x] T1 fixed: asks before recommending. Re-run passed.
 - [x] T8 fixed: one sharp priority question. Re-run passed.
-- [ ] T2: merge the duplicate `priorities` question, then re-run.
+- [x] T2 fixed: one question per field. Re-run passed.
 - [ ] Run T3–T7.
 - [ ] Backend schema enforcement confirmed as the final guard, regardless of prompt quality.
