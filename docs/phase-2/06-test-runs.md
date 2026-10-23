@@ -1,8 +1,12 @@
-# 07 — Test Runs (Consolidated)
+# 06 — Test Runs (Consolidated)
 
-One sheet for every Phase 2 test case: the three dilemmas plus edge cases. Run each case in
-a free chat (ChatGPT or Google AI Studio) using the prompt in
-[05-system-prompt.md](./05-system-prompt.md). Record the result and verdict below.
+Single sheet for every Phase 2 test. Run each case in a free chat (ChatGPT or Google AI
+Studio) using the prompt in [05-system-prompt.md](./05-system-prompt.md). Record the result
+and verdict below.
+
+**Categories**
+- **Real-life dilemma** — the three product scenarios (T1–T3).
+- **Edge case** — boundaries that must not break (T4–T8).
 
 > The prompt _describes_ JSON. It cannot _enforce_ it. The backend must validate every
 > response against the schema (Zod) and reject bad output before it reaches the UI.
@@ -16,9 +20,23 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 | Prompt version | `05-system-prompt.md` @ draft |
 | Tool | ChatGPT / AI Studio |
 
+## Global pass criteria
+
+- [ ] Never invents facts; asks only when a missing fact changes the answer.
+- [ ] At most 4 questions; every question names the field it feeds.
+- [ ] One question per `feeds` field — merged, not repeated.
+- [ ] Zero-question path works when the input is already detailed.
+- [ ] All five sections present; exactly one blind spot.
+- [ ] Recommendation picks one option and hedges lightly.
+- [ ] `changeIf` is specific to the dilemma.
+- [ ] Valid JSON matching the schema; no markdown fences.
+- [ ] A brief request keeps all sections to roughly one line.
+
 ## Cases
 
-### T1 — Groceries (standard)
+### T1 — Groceries
+
+**Category:** Real-life dilemma (standard)
 
 **Payload**
 
@@ -75,11 +93,11 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 - The blind spot admits the value of Saturday time is unknown and could change the answer, yet it returned `complete` instead of asking.
 - Priorities were inferred from the options, not stated, so the recommendation rests on an assumption.
 
-**Fix needed:** tighten the prompt so an admitted unknown that could flip the recommendation triggers `needs_info` instead of an answer.
-
 ---
 
-### T2 — Career (standard)
+### T2 — Career
+
+**Category:** Real-life dilemma (standard)
 
 **Payload**
 
@@ -132,7 +150,9 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 
 ---
 
-### T3 — Social (standard)
+### T3 — Social
+
+**Category:** Real-life dilemma (standard)
 
 **Payload**
 
@@ -151,7 +171,9 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 
 ---
 
-### T4 — Sufficient information (zero-question path)
+### T4 — Sufficient information
+
+**Category:** Edge case (zero-question path)
 
 **Payload**
 
@@ -170,7 +192,9 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 
 ---
 
-### T5 — Insufficient information (question quality)
+### T5 — Insufficient information
+
+**Category:** Edge case (question quality)
 
 **Payload**
 
@@ -186,7 +210,9 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 
 ---
 
-### T6 — Non-decision input (unsupported)
+### T6 — Non-decision input
+
+**Category:** Edge case (unsupported input)
 
 **Payload**
 
@@ -210,7 +236,9 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 
 ---
 
-### T7 — Brevity (short answer)
+### T7 — Brevity
+
+**Category:** Edge case (short answer)
 
 **Payload** — run T2's analysis with this appended:
 
@@ -231,7 +259,9 @@ a free chat (ChatGPT or Google AI Studio) using the prompt in
 
 ---
 
-### T8 — Almost enough (partially sufficient)
+### T8 — Almost enough
+
+**Category:** Edge case (partial input)
 
 This is the realistic case: the user gives options and a trade-off, but never says what matters most.
 
@@ -253,21 +283,22 @@ This is the realistic case: the user gives options and a trade-off, but never sa
 
 ## Summary
 
-| Case | Type | Expected | Actual | Verdict |
-| --- | --- | --- | --- | --- |
-| T1 | Groceries | ask if priority unknown | answered without asking | **FAIL** |
-| T2 | Career | ask about savings/priorities | asked; q2/q3 overlap | **PASS (minor)** |
-| T3 | Social | picks one option | | |
-| T4 | Sufficient | zero questions | | |
-| T5 | Insufficient | ≤4 useful questions | | |
-| T6 | Non-decision | exact `unsupported_input` | | |
-| T7 | Brevity | 5 sections, one line each | | |
-| T8 | Almost enough | ask 1–2 about priorities | | |
+| Case | Category | Type | Expected | Actual | Verdict |
+| --- | --- | --- | --- | --- | --- |
+| T1 | Real-life | Groceries | ask if priority unknown | answered without asking | **FAIL** |
+| T2 | Real-life | Career | ask about savings/priorities | asked; q2/q3 overlap | **PASS (minor)** |
+| T3 | Real-life | Social | picks one option | | |
+| T4 | Edge | Sufficient | zero questions | | |
+| T5 | Edge | Insufficient | ≤4 useful questions | | |
+| T6 | Edge | Non-decision | exact `unsupported_input` | | |
+| T7 | Edge | Brevity | 5 sections, one line each | | |
+| T8 | Edge | Almost enough | ask 1–2 about priorities | | |
 
 ## Outcome
 
 - [ ] All cases pass → freeze Phase 2.
-- [x] T1 failed: ask when an admitted unknown could change the recommendation. Prompt revision pending.
-- [x] T2 passed on policy; merge duplicate `priorities` questions. Prompt revision pending.
-- [ ] Prompt revised, then T1/T2/T8 re-run.
+- [x] T1 failed: ask when an admitted unknown could change the recommendation. Prompt revised.
+- [x] T2 passed on policy; merge duplicate `priorities` questions. Prompt revised.
+- [ ] Re-run T1, T2, and T8 with the revised prompt.
+- [ ] Run T3–T7.
 - [ ] Backend schema enforcement confirmed as the final guard, regardless of prompt quality.
