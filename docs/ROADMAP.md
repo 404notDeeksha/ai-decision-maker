@@ -28,11 +28,21 @@ All phases in one place. This is the map; each phase folder holds the detail.
 
 **Goal:** design the screens and the AI behaviour before writing code.
 
-**Ships:** locked decisions, user journey, wireframes, AI workflow, system prompt, eight prompt tests.
+**Two tracks:**
+- **A — UI/UX:** what the user sees and does → journey, wireframes, states.
+- **B — AI behaviour:** how the AI reasons and responds → workflow, schema, system prompt.
 
-**Done when:** every question maps to a result field and the prompt passes all test cases.
+**Order:** journey → AI workflow → map every question to a result field → test the dilemmas and edge cases → freeze.
 
-**Detail:** [Phase 2 docs](./phase-2/) · [Phase 2 decisions](./phase-2/01-decisions.md) · [AI workflow](./phase-2/04-ai-workflow.md)
+**Done when (all true):**
+- [x] Input, share, follow-up, tone, call-budget, limit, and test decisions locked.
+- [x] One end-to-end journey documented.
+- [x] Every question maps to a result field.
+- [x] Wireframes cover happy path and edge states.
+- [x] AI workflow and system prompt drafted.
+- [x] Prompt run against all eight cases (T7 with a minor brevity overrun).
+
+**Detail:** [Phase 2 decisions](./phase-2/01-decisions.md) · [AI workflow](./phase-2/04-ai-workflow.md) · [all Phase 2 docs](./README.md#product--phase-2)
 
 ## 3. Build — make it work
 

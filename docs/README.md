@@ -21,7 +21,6 @@ See the [roadmap](./ROADMAP.md) for all phases.
 
 | Doc | Covers |
 |---|---|
-| [Phase 2 Plan](./phase-2/README.md) | Two tracks, execution order, exit criteria |
 | [01 Decisions](./phase-2/01-decisions.md) | Locked UI/UX and AI behaviour decisions |
 | [02 User Journey](./phase-2/02-user-journey.md) | End-to-end flow, shortcuts, edge states |
 | [03 Wireframes](./phase-2/03-wireframes.md) | Low-fidelity mobile screens |
