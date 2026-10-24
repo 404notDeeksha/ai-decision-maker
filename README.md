@@ -146,20 +146,22 @@ whatIf/
 
 ## Roadmap
 
-- [x] Phase 1 — product definition, MVP scope, user flow, success metrics, decisions
-- [x] Phase 1 — tech stack, architecture, API contract
-- [x] Phase 2 — user journey, wireframes, AI workflow, system prompt, decisions
-- [x] Phase 2 — validate the prompt against the three test dilemmas and edge cases
-- [ ] Scaffold client and server (build tooling, lint, test setup)
-- [ ] `POST /api/analyze` with Zod-validated LLM output
-- [ ] Three screens: input → questions → results, with loading/error states
-- [ ] Rate limiting, input caps, global daily cap
-- [ ] Deploy and validate with real users
+See [docs/ROADMAP.md](docs/ROADMAP.md) for all phases, what each one ships, and the
+current focus.
+
+| Phase | Goal | Status |
+|---|---|---|
+| 1. Product | Decide what to build | ✅ Done |
+| 2. Design | Screens and AI behaviour | ✅ Done |
+| 3. Build | Make it work end to end | ⬜ Next |
+| 4. Ship | Put it online | ⬜ Not started |
+| 5. Learn | Improve from real use | ⬜ Not started |
 
 ## Documentation
 
 Start at the [docs index](docs/README.md), or jump straight to:
 
+- [Roadmap](docs/ROADMAP.md) — all phases and current focus
 - [Product definition](docs/phase-1/01-product-definition.md) · [MVP scope](docs/phase-1/02-mvp-scope.md) · [User flow](docs/phase-1/03-user-flow.md)
 - [Decisions log](docs/phase-1/05-decisions-log.md) · [Free access & limits](docs/phase-1/06-free-access-and-limits.md)
 - [Phase 2 decisions](docs/phase-2/01-decisions.md) · [User journey](docs/phase-2/02-user-journey.md) · [AI workflow](docs/phase-2/04-ai-workflow.md)

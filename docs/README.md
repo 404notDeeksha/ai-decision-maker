@@ -3,7 +3,8 @@
 Index of the product, tech, and process docs. For the project overview, stack, and
 getting started, see the [root README](../README.md).
 
-**Progress:** Phase 1 complete · Phase 2 complete and frozen · Phase 3 (build) not started.
+**Progress:** Phase 1 complete · Phase 2 complete and frozen · Phase 3 (build) next.
+See the [roadmap](./ROADMAP.md) for all phases.
 
 ## Product — Phase 1
 
@@ -39,4 +40,5 @@ getting started, see the [root README](../README.md).
 
 | Doc | Covers |
 |---|---|
+| [Roadmap](./ROADMAP.md) | All phases, what each ships, current focus |
 | [Git Strategy](./GIT_STRATEGY.md) | Branch naming, commit conventions, workflow |
